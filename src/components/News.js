@@ -10,7 +10,7 @@ export class News extends Component {
   static defaultProps = {
     country:"in",
     pageSize:8,
-    category:'general'
+    category:'business'
   }
 
   static propTypes = {
@@ -19,14 +19,23 @@ export class News extends Component {
     category: PropTypes.string
   }
 
-  constructor(){
-    super();
-    console.log("Hello I am a Programmer from news component");
+  capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  constructor(props){
+    super(props);
+
     this.state =  {
       articles : [],
       loading: false,
       page:1
     }
+    document.title = `${this.props.category} - NewsMonkey`;
+  }
+
+  async updateNews(pageNo){
+    
   }
 
   //it will run after render
@@ -35,20 +44,20 @@ export class News extends Component {
   //backticks are used so that we can use it as variable
   async componentDidMount(){
     console.log("cdm");
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=business&category=${this.props.category}&category=${this.props.category}&category=${this.props.category}&category=${this.props.category}&apiKey=55440c00dd54481eae1f7996c7464b7d&page=1&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=55440c00dd54481eae1f7996c7464b7d&page=1&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
-    console.log(parsedData);
+    
     this.setState({
       articles: parsedData.articles, 
       totalResults: parsedData.totalResults,
-    loading: false});
+    loading: true});
   }
 
   handlePrevClick = async ()=>{
     console.log("prev")
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=business&category=${this.props.category}&category=${this.props.category}&category=${this.props.category}&category=${this.props.category}&apiKey=55440c00dd54481eae1f7996c7464b7d&page=${this.state.page - 1}
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=business&category=${this.props.category}&apiKey=55440c00dd54481eae1f7996c7464b7d&page=${this.state.page - 1}
     &pageSize=${this.props.pageSize}`;
 
     this.setState({loading:true});
@@ -85,15 +94,23 @@ export class News extends Component {
   render() {
    
     return (
-      <div className='container my-3'>
-      <h1 className='text-center' style={{margin: '35px 0px'}}> NewsMonkey - Top Headlines </h1>
+      <div className="container my-2">
+        <h1 className="text-center" style={{ margin: "35px 0px" }}>
+          NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
+          Headlines
+        </h1>
       {this.state.loading && <Spinner2 />}
             <div className='row'>
             {this.state.loading && this.state.articles.map ((element)=>{
               return <div className='col-md-4' key={element.url}>
                 <NewsItem title={element.title ? element.title.slice(0,110):""} 
-                          description={element.description ? element.description:""} imageUrl={element.urlToImage} 
-                          newsUrl={element.url}/>
+                          description={element.description ? element.description:""} 
+                          imageUrl={element.urlToImage} 
+                          newsUrl={element.url}
+                          author={element.author}
+                          date={element.publishedAt}
+                          source={element.source.name}
+                          />
               </div>
             })}
         </div>
