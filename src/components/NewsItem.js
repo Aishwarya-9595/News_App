@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 export class NewsItem extends Component {
 
   render() {
-    let { title, description, imageUrl , newsUrl, author, date,source} = this.props;
+    let { title, description, imageUrl , newsUrl, author, date, source} = this.props;
 
     return (
-      <div className='my-3'>
+      <div className='my-2'>
         <div className="card" style={{width: '24rem'}} >
         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ left: '90%', zIndex:1}}> {source} </span>
             <img src={!imageUrl ? "https://static.toiimg.com/thumb/msid-97919243,width-1070,height-580,imgsize-596376,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg":imageUrl} className="card-img-top" alt="..."/>

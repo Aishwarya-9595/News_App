@@ -1,10 +1,14 @@
 //rcep
 import React, { Component } from 'react';
 
+//npm install react-router-dom
 
 import {
   Link
 } from "react-router-dom";
+
+// replace <a> with <Link>
+// replace href="" with to=""
 
 export class Navbar extends Component {
  
